@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kapcsolat – BlueLine RP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cyan: #00d4ff;
+    --cyan-dim: rgba(0, 212, 255, 0.12);
+    --bg: #080c10;
+    --bg-card: #0d1117;
+    --border: rgba(255,255,255,0.07);
+    --text: #c8d6e5;
+    --muted: #6b7e90;
+    --green: #22c55e;
+    --blue: #3b82f6;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 60px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    color: white;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--cyan); }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: white; }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 80px 24px 100px; }
+
+  .eyebrow {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .eyebrow::before { content: '// '; }
+
+  h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+  h1 span { color: var(--cyan); }
+
+  .subtitle {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 56px;
+  }
+
+  .contact-top-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .contact-bottom-row {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Card wrapper for border animation */
+  .contact-card {
+    position: relative;
+    border-radius: 10px;
+    padding: 2px; /* space for animated border */
+    background: transparent;
+  }
+
+  .contact-card.bmw-card {
+    width: calc(50% - 8px);
+  }
+
+  /* Rotating conic gradient border */
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    padding: 2px;
+    background: conic-gradient(
+      from var(--angle, 0deg),
+      transparent 0%,
+      transparent 60%,
+      var(--cyan) 75%,
+      #7fffff 80%,
+      var(--cyan) 85%,
+      transparent 100%
+    );
+    /* JAVÍTVA: Mind a régi -webkit, mind a modern maszkolási szabvány hozzáadva, így nem dob hibát */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotate-border 3s linear infinite;
+  }
+
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes rotate-border {
+    to { --angle: 360deg; }
+  }
+
+  /* Inner card content */
+  .contact-card-inner {
+    background: #0d1117;
+    border-radius: 9px;
+    padding: 28px;
+    position: relative;
+    z-index: 1;
+    height: 100%;
+  }
+
+  .contact-card .role {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .contact-card .name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 20px;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .contact-row .icon {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+  .icon-email { background: rgba(0,212,255,0.1); }
+  .icon-discord-green { background: rgba(34,197,94,0.12); }
+  .icon-discord-blue { background: rgba(59,130,246,0.12); }
+  .icon-discord-white { background: rgba(255,255,255,0.08); }
+
+  .contact-row .contact-val {
+    font-size: 0.85rem;
+    color: var(--text);
+    word-break: break-all;
+  }
+  .contact-row .discord-name-green { color: var(--green); font-weight: 500; }
+  .contact-row .discord-name-blue  { color: var(--blue);  font-weight: 500; }
+  .contact-row .discord-name-white { color: #ffffff;      font-weight: 500; }
+
+  .divider {
+    width: 100%; height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  @media (max-width: 600px) {
+    .contact-top-row { grid-template-columns: 1fr; }
+    .contact-card.bmw-card { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html"><span>BLUE</span>LINE</a>
+  <div class="nav-links">
+    <a href="index.html">Főoldal</a>
+    <a href="rolam.html">Rólunk</a>
+    <a href="kapcsolat.html" class="active">Kapcsolat</a>
+    <a href="tulajok.html">Tulajdonosok</a>
+    <a href="csapatunk.html">Admin Csapat</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <p class="eyebrow">Elérhetőségeink</p>
+  <h1><span>Kapcsolat</span></h1>
+  <p class="subtitle">Keress minket emailben vagy Discordon – szívesen válaszolunk minden kérdésre.</p>
+
+  <div class="contact-top-row">
+
+    <div class="contact-card">
+      <div class="contact-card-inner">
+        <div class="role">Tulajdonos</div>
+        <div class="name">TitanGamer</div>
+        <div class="contact-row">
+          <div class="icon icon-email">📧</div>
+          <span class="contact-val">titangamergameplay@gmail.com</span>
+        </div>
+        <div class="divider"></div>
+        <div class="contact-row">
+          <div class="icon icon-discord-green">💬</div>
+          <span class="contact-val discord-name-green">TitanGamer</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-card-inner">
+        <div class="role">Tulajdonos</div>
+        <div class="name">RPPatrik</div>
+        <div class="contact-row">
+          <div class="icon icon-email">📧</div>
+          <span class="contact-val">rppatrik.real@gmail.com</span>
+        </div>
+        <div class="divider"></div>
+        <div class="contact-row">
+          <div class="icon icon-discord-blue">💬</div>
+          <span class="contact-val discord-name-blue">RPPatrik</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="contact-bottom-row">
+    <div class="contact-card bmw-card">
+      <div class="contact-card-inner">
+        <div class="role">Társ-Tulajdonos</div>
+        <div class="name">Bmw</div>
+        <div class="contact-row">
+          <div class="icon icon-email">📧</div>
+          <span class="contact-val">-</span>
+        </div>
+        <div class="divider"></div>
+        <div class="contact-row">
+          <div class="icon icon-discord-white">💬</div>
+          <span class="contact-val discord-name-white">Bmw02336</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

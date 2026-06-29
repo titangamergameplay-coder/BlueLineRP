@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlueLine RP</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:    #060912;
+  --bg-mid:     #0d1526;
+  --bg-card:    rgba(16, 30, 60, 0.6);
+  --blue-glow:  #00d4ff;
+  --blue-mid:   #0088cc;
+  --blue-dim:   #1a4a6e;
+  --white:      #e8f4ff;
+  --muted:      #6b8ba4;
+  --border:     rgba(0, 212, 255, 0.15);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── ANIMATED STARFIELD BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(0,212,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 15%, rgba(0,212,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 50%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 80%, rgba(0,212,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 90%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 55%, rgba(0,212,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 35%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 10%, rgba(0,212,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5%  90%, rgba(255,255,255,0.3) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 48px;
+  background: rgba(6, 9, 18, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  color: var(--blue-glow);
+  text-shadow: 0 0 20px rgba(0,212,255,0.6);
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--white); }
+
+.nav-links { display: flex; gap: 36px; list-style: none; }
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+.nav-links a:hover, .nav-links a:visited:hover {
+  color: var(--blue-glow);
+  text-shadow: 0 0 10px rgba(0,212,255,0.5);
+}
+
+.nav-links a:visited { color: var(--muted); }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  overflow: hidden;
+}
+
+/* Large glowing orb background */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -55%);
+  width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(0,136,204,0.12) 0%, rgba(0,212,255,0.04) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -55%) scale(1); opacity: 0.7; }
+  50% { transform: translate(-50%, -55%) scale(1.08); opacity: 1; }
+}
+
+/* Horizontal scan line */
+.hero-scan {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue-glow), transparent);
+  animation: scan 6s linear infinite;
+  opacity: 0.4;
+}
+
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue-glow);
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0,212,255,0.12);
+  border: 1px solid rgba(0,212,255,0.35);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.7rem;
+}
+
+.live-dot {
+  width: 6px; height: 6px;
+  background: #00ff88;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #00ff88;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.hero h1 {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 8px;
+}
+
+.hero h1 .blue { color: var(--blue-glow); text-shadow: 0 0 40px rgba(0,212,255,0.5); }
+
+.hero-sub {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-desc {
+  max-width: 560px;
+  color: rgba(232,244,255,0.65);
+  font-size: 1rem;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--blue-glow);
+  color: #060912;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 4px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 0 24px rgba(0,212,255,0.4);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 40px rgba(0,212,255,0.7);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--blue-glow);
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 32px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,212,255,0.4);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(0,212,255,0.08);
+  border-color: var(--blue-glow);
+  transform: translateY(-2px);
+}
+
+/* ── STATS BAR ── */
+.stats-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 700px;
+  margin: 0 auto;
+  backdrop-filter: blur(12px);
+  margin-top: 60px;
+}
+
+.stat {
+  flex: 1;
+  text-align: center;
+  padding: 24px 20px;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+
+.stat:last-child { border-right: none; }
+
+.stat-number {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: var(--blue-glow);
+  display: block;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+/* ── SECTIONS ── */
+section {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 32px;
+}
+
+.section-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-glow);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  margin-bottom: 48px;
+  color: var(--white);
+}
+
+.section-title span { color: var(--blue-glow); }
+
+/* ── GRID CARDS ── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 32px;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue-glow), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card:hover {
+  border-color: rgba(0,212,255,0.4);
+  box-shadow: 0 0 30px rgba(0,212,255,0.08), 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(-4px);
+}
+
+.card:hover::before { opacity: 1; }
+
+.card-icon {
+  width: 44px; height: 44px;
+  background: rgba(0,212,255,0.1);
+  border: 1px solid rgba(0,212,255,0.25);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.card h3 {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  color: var(--white);
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.card a {
+  color: var(--blue-glow);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: text-shadow 0.2s;
+  word-break: break-all;
+}
+
+.card a:visited { color: var(--blue-glow); }
+.card a:hover { text-shadow: 0 0 10px rgba(0,212,255,0.6); }
+
+/* ── UPDATE FEED ── */
+.updates { display: flex; flex-direction: column; gap: 16px; }
+
+.update-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.2s;
+}
+
+.update-item:hover { border-color: rgba(0,212,255,0.3); }
+
+.update-tag {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bg-deep);
+  background: var(--blue-glow);
+  padding: 4px 10px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.update-tag.new { background: #00ff88; }
+.update-tag.fix { background: #ffaa00; }
+
+.update-text {
+  font-size: 0.92rem;
+  color: rgba(232,244,255,0.8);
+}
+
+.update-date {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ── SEPARATOR ── */
+.separator {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.sep-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), var(--blue-dim), var(--border), transparent);
+}
+
+/* ── DISCORD BANNER ── */
+.discord-banner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto 80px;
+  padding: 0 32px;
+}
+
+.discord-inner {
+  background: linear-gradient(135deg, rgba(0,212,255,0.08) 0%, rgba(0,136,204,0.04) 100%);
+  border: 1px solid rgba(0,212,255,0.25);
+  border-radius: 12px;
+  padding: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.discord-inner::before {
+  content: '◈';
+  position: absolute;
+  right: 48px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 8rem;
+  color: rgba(0,212,255,0.04);
+  pointer-events: none;
+  font-family: 'Orbitron', monospace;
+}
+
+.discord-text h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.discord-text p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  max-width: 400px;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  background: rgba(6,9,18,0.9);
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: gap;
+  gap: 16px;
+}
+
+.footer-logo {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 0.95rem;
+  color: var(--blue-glow);
+  text-shadow: 0 0 12px rgba(0,212,255,0.4);
+}
+
+.footer-copy {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.footer-nav { display: flex; gap: 28px; }
+
+.footer-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.2s;
+}
+
+.footer-nav a:visited { color: var(--muted); }
+.footer-nav a:hover { color: var(--blue-glow); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 16px 24px; }
+  .nav-links { gap: 20px; }
+  .nav-links a { font-size: 0.75rem; }
+  .stats-bar { flex-direction: column; }
+  .stat { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat:last-child { border-bottom: none; }
+  footer { flex-direction: column; text-align: center; }
+  .footer-nav { flex-wrap: wrap; justify-content: center; }
+  .discord-inner { padding: 32px 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::after, .live-dot, .hero-scan { animation: none; }
+  .card, .btn-primary, .btn-secondary { transition: none; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">BLUE<span>LINE</span></a>
+  <ul class="nav-links">
+    <a href="index.html">Főoldal</a>
+    <li><a href="rolam.html">Rólunk</a></li>
+    <li><a href="kapcsolat.html">Kapcsolat</a></li>
+    <li><a href="tulajok.html">Tulajdonosok</a></li>
+    <li><a href="csapatunk.html">Admin csapat</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-scan"></div>
+
+  <div class="hero-eyebrow">
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      SZERVER AKTÍV
+    </div>
+    GTA Roleplay
+  </div>
+
+  <h1><span class="blue">BLUE</span>LINE<br>ROLEPLAY</h1>
+  <p class="hero-sub">Lépj be. Élj egy új életet.</p>
+
+  <p class="hero-desc">
+    A BlueLine RP egy magyar GTA roleplay szerver, ahol minden pillanat számít.
+    Valósághű gazdaság, kidolgozott karakterek, aktív közösség.
+  </p>
+
+  <div class="hero-cta">
+    <a href="https://discord.gg/KuCJB6XmTa" target="_blank" class="btn-primary">
+      ⬡ Csatlakozz Discordon
+    </a>
+    <a href="rolam.html" class="btn-secondary">
+      Tudj meg többet →
+    </a>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-number">24/7</span>
+      <span class="stat-label">Folyamatos üzemelés</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">HU</span>
+      <span class="stat-label">Magyar közösség</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">RP</span>
+      <span class="stat-label">Komoly roleplay</span>
+    </div>
+  </div>
+</div>
+
+<!-- DIVIDER -->
+<div class="separator"><div class="sep-line"></div></div>
+
+<!-- INFO CARDS -->
+<section>
+  <p class="section-eyebrow">// Amit kínálunk</p>
+  <h2 class="section-title">Miért éppen <span>BlueLine</span>?</h2>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🏙️</div>
+      <h3>Élő Világ</h3>
+      <p>Kidolgozott gazdasági rendszer, munkák, bűnözői karrierek és törvényes vállalkozások. Minden döntésed következményekkel jár.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚔</div>
+      <h3>Aktív Rendőrség</h3>
+      <p>Valódi emberi rendőrök, akik igazságos és izgalmas roleplay-t biztosítanak az utcákon. Nincs bot, csak igazi interakció.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛵</div>
+      <h3>Folyamatos Fejlesztés</h3>
+      <p>Rendszeres frissítések, új járművek, helyszínek és rendszerek. A szerver folyamatosan bővül a közösség visszajelzései alapján.</p>
+    </div>
+        <div class="card">
+      <div class="card-icon">📜</div>
+      <h3>A te véleményed! </h3>
+      <p>Ezen a szerveren számít hogy te mit gondolsz! Itt te is beleszólhatsz a szerver jövőjébe❗ </p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💬</div>
+      <h3>Discord Közösség</h3>
+      <p>Csatlakozz Discord szerverünkre a legfrissebb hírekért, eseményekért és hogy megismerd a csapatot.</p>
+      <br>
+      <a href="https://discord.gg/KuCJB6XmTa" target="_blank">discord.gg/KuCJB6XmTa ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="separator"><div class="sep-line"></div></div>
+
+<!-- UPDATES -->
+<section>
+  <p class="section-eyebrow">// Változásnapló</p>
+  <h2 class="section-title">Legújabb <span>Frissítések</span></h2>
+
+  <div class="updates">
+    <div class="update-item">
+      <span class="update-tag new">ÚJ</span>
+      <div>
+        <div class="update-text">Bérelhető elektromos roller érhető el a városban – vedd kölcsön,menj körbe a városon és fedezd fel azt! </div>
+        <div class="update-date">2026..06.29 </div>
+      </div>
+    </div>
+    <div class="update-item">
+      <span class="update-tag">UPDATE</span>
+      <div>
+        <div class="update-text">Az admin csapatunk folyamatosan bővül, és az esti csúcsidőben is egyre több staff tag elérhető a szerveren! </div>
+        <div class="update-date">2026.06.29 </div>
+      </div>
+    </div>
+    <div class="update-item">
+      <span class="update-tag fix">FIX</span>
+      <div>
+        <div class="update-text">Meghoztuk a legújabb frissítést!: A legál és illegál munkáknak ki lett balancolva a fizetése! </div>
+        <div class="update-date">2026.06.29 </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCORD BANNER -->
+<div class="discord-banner">
+  <div class="discord-inner">
+    <div class="discord-text">
+      <h3>Készen állsz?</h3>
+      <p>Csatlakozz a közösséghez Discordon – ott találod a belépési útmutatót, a szabályokat és az aktív csapatot.</p>
+    </div>
+    <a href="https://discord.gg/KuCJB6XmTa" target="_blank" class="btn-primary" style="flex-shrink:0;">
+      ⬡ Discord Megnyitása
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">BLUELINE RP</div>
+  <span class="footer-copy">© 2026 BlueLine Roleplay — Minden jog fenntartva</span>
+  <nav class="footer-nav"> 
+    <a href="rolam.html">Rólunk</a>
+    <a href="kapcsolat.html">Kapcsolat</a>
+    <a href="tulajok.html">Tulajdonosok</a>
+    <a href="csapatunk.html">Admin csapat</a>
+  </nav>
+</footer>
+
+</body>
+</html>

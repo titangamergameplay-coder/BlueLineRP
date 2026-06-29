@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rólunk – BlueLine RP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cyan: #00d4ff;
+    --cyan-dim: rgba(0, 212, 255, 0.12);
+    --bg: #080c10;
+    --bg-card: #0d1117;
+    --bg-card2: #111820;
+    --border: rgba(255,255,255,0.07);
+    --text: #c8d6e5;
+    --muted: #6b7e90;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 60px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    color: white;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--cyan); }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: white; }
+
+  /* PAGE */
+  .page { max-width: 960px; margin: 0 auto; padding: 80px 24px 100px; }
+
+  .eyebrow {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .eyebrow::before { content: '// '; }
+
+  h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 40px;
+  }
+  h1 span { color: var(--cyan); }
+
+  .intro-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text);
+    max-width: 680px;
+    margin-bottom: 56px;
+  }
+
+  /* CARDS */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 56px; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); }
+
+  .card-icon {
+    width: 44px; height: 44px;
+    background: var(--cyan-dim);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+  .card h3 {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+    margin-bottom: 8px;
+  }
+  .card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+  /* FRAKCIO LISTA */
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  .faction-list {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-bottom: 60px;
+  }
+  .faction-tag {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+
+  /* CTA */
+  .cta-bar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .cta-bar h2 { font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; color: white; margin-bottom: 4px; }
+  .cta-bar p { font-size: 0.88rem; color: var(--muted); }
+  .btn {
+    background: var(--cyan);
+    color: #080c10;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 12px 26px;
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn:hover { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html"><span>BLUE</span>LINE</a>
+  <div class="nav-links">
+    <a href="index.html">Főoldal</a>
+    <a href="rolam.html" class="active">Rólunk</a>
+    <a href="kapcsolat.html">Kapcsolat</a>
+    <a href="tulajok.html">Tulajdonosok</a>
+    <a href="csapatunk.html">Admin Csapat</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <p class="eyebrow">A szerverről</p>
+  <h1>Miért éppen <span>BlueLine</span>?</h1>
+
+  <p class="intro-text">
+    Egy új FiveM szerver vagyunk a piacon, de folyamatosan fejlődünk és figyelembe vesszük a játékosok véleményét.
+    Szerverünkön egyedi élményeket szerezhetsz, részt vehetsz eseményeken és kihívásokon.
+    Célunk egy barátságos, támogató közösség, ahol mindenki jól érzi magát.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🏙️</div>
+      <h3>Élő Világ</h3>
+      <p>Kidolgozott gazdasági rendszer, munkák, bűnözői karrierek és törvényes vállalkozások. Minden döntésednek következménye van.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">👮</div>
+      <h3>Aktív Rendőrség</h3>
+      <p>Valódi emberi rendőrök, akik igazságos és izgalmas roleplay-t biztosítanak az utcákon. Nincs bot, csak igazi interakció.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3>Folyamatos Fejlesztés</h3>
+      <p>Rendszeres frissítések, új járművek, helyszínek és rendszerek. A szerver folyamatosan bővül a közösség visszajelzései alapján.</p>
+    </div>
+  </div>
+
+  <p class="section-title">Egyedi legális frakciók!</p>
+  <div class="faction-list">
+    <span class="faction-tag">🚔 LSPD</span>
+    <span class="faction-tag">🕵️ FIB</span>
+  </div>
+
+    <p class="section-title">Egyedi illegális frakciók!</p>
+  <div class="faction-list">
+    <span class="faction-tag">🔴 Bloods</span>
+    <span class="faction-tag">🖤 Sötét Testvériség</span>
+  </div>
+
+  <div class="cta-bar">
+    <div>
+      <h2>Csatlakozz a közösséghez!</h2>
+      <p>Lépj be Discordunkra – ott találod a belépési útmutatót és az aktív csapatot.</p>
+    </div>
+    <a class="btn" href="#">◎ Discord megnyitása</a>
+  </div>
+
+</div>
+</body>
+</html>
