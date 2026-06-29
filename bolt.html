@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlueLine RP – Bolt</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:    #060912;
+  --bg-mid:     #0d1526;
+  --bg-card:    rgba(16, 30, 60, 0.6);
+  --blue-glow:  #00d4ff;
+  --blue-mid:   #0088cc;
+  --blue-dim:   #1a4a6e;
+  --white:      #e8f4ff;
+  --muted:      #6b8ba4;
+  --border:     rgba(0, 212, 255, 0.15);
+  --gold:       #ffd700;
+  --silver:     #c0c0c0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── STARFIELD ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(0,212,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 15%, rgba(0,212,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 50%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 80%, rgba(0,212,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 90%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 55%, rgba(0,212,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 35%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 10%, rgba(0,212,255,0.5) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 48px;
+  background: rgba(6, 9, 18, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  color: var(--blue-glow);
+  text-shadow: 0 0 20px rgba(0,212,255,0.6);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--white); }
+
+.nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+.nav-links a:hover { color: var(--blue-glow); text-shadow: 0 0 10px rgba(0,212,255,0.5); }
+.nav-links a:visited { color: var(--muted); }
+.nav-links a.active { color: var(--blue-glow); text-shadow: 0 0 10px rgba(0,212,255,0.4); }
+
+/* ── SHOP HERO ── */
+.shop-hero {
+  position: relative;
+  z-index: 1;
+  padding: 140px 48px 60px;
+  text-align: center;
+}
+.shop-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-glow);
+  margin-bottom: 12px;
+}
+.shop-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.shop-title span { color: var(--blue-glow); text-shadow: 0 0 30px rgba(0,212,255,0.5); }
+.shop-desc {
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ── SECTION ── */
+.shop-section {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-glow);
+  margin-bottom: 8px;
+}
+.section-heading {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--white);
+  margin-bottom: 32px;
+}
+.section-heading span { color: var(--blue-glow); }
+
+/* ── PACKAGE GRID ── */
+.pkg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+  margin-bottom: 0;
+}
+
+/* ── PACKAGE CARD ── */
+.pkg-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px 24px 24px;
+  backdrop-filter: blur(14px);
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+  overflow: hidden;
+  animation: fadeIn 0.4s ease both;
+}
+.pkg-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.pkg-card:hover { transform: translateY(-5px); box-shadow: 0 0 36px rgba(0,212,255,0.1), 0 12px 40px rgba(0,0,0,0.5); border-color: rgba(0,212,255,0.4); }
+.pkg-card:hover::before { opacity: 1; }
+
+.pkg-card.tier-starter::before { background: linear-gradient(90deg, transparent, #00d4ff, transparent); }
+.pkg-card.tier-silver { border-color: rgba(192,192,192,0.25); }
+.pkg-card.tier-silver::before { background: linear-gradient(90deg, transparent, var(--silver), transparent); }
+.pkg-card.tier-silver:hover { border-color: rgba(192,192,192,0.6); box-shadow: 0 0 36px rgba(192,192,192,0.08), 0 12px 40px rgba(0,0,0,0.5); }
+.pkg-card.tier-gold { border-color: rgba(255,215,0,0.25); }
+.pkg-card.tier-gold::before { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.pkg-card.tier-gold:hover { border-color: rgba(255,215,0,0.6); box-shadow: 0 0 36px rgba(255,215,0,0.1), 0 12px 40px rgba(0,0,0,0.5); }
+.pkg-card.tier-elite { border-color: rgba(0,212,255,0.4); box-shadow: 0 0 24px rgba(0,212,255,0.06); }
+.pkg-card.tier-elite::before { background: linear-gradient(90deg, transparent, #00d4ff, transparent); opacity: 1; }
+
+/* ── BADGE ── */
+.popular-badge {
+  position: absolute;
+  top: 14px; right: 14px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--blue-glow);
+  color: #060912;
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+.popular-badge.gold { background: var(--gold); }
+
+/* ── CARD CONTENT ── */
+.tier-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; line-height: 1; }
+
+.pkg-pp {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 2.2rem;
+  line-height: 1;
+  margin-bottom: 4px;
+  display: block;
+}
+.tier-starter .pkg-pp { color: var(--blue-glow); text-shadow: 0 0 24px rgba(0,212,255,0.5); }
+.tier-silver  .pkg-pp { color: var(--silver); text-shadow: 0 0 18px rgba(192,192,192,0.4); }
+.tier-gold    .pkg-pp { color: var(--gold);   text-shadow: 0 0 20px rgba(255,215,0,0.5); }
+.tier-elite   .pkg-pp { color: var(--blue-glow); text-shadow: 0 0 30px rgba(0,212,255,0.7); }
+
+.pkg-pp-label { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; display: block; }
+.pkg-divider { height: 1px; background: var(--border); margin: 14px 0; }
+
+.pkg-price {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 4px;
+  display: block;
+}
+.tier-starter .pkg-price { color: var(--white); }
+.tier-silver  .pkg-price { color: var(--silver); }
+.tier-gold    .pkg-price { color: var(--gold); }
+.tier-elite   .pkg-price { color: var(--blue-glow); }
+
+.pkg-price-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; display: block; }
+
+.pkg-features { list-style: none; margin-bottom: 22px; }
+.pkg-features li { font-size: 0.82rem; color: rgba(232,244,255,0.7); padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+.pkg-features li::before { content: '◆'; font-size: 0.5rem; color: var(--blue-glow); flex-shrink: 0; }
+.tier-silver .pkg-features li::before { color: var(--silver); }
+.tier-gold   .pkg-features li::before { color: var(--gold); }
+
+.pkg-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 5px;
+  border: 1px solid rgba(0,212,255,0.4);
+  color: var(--blue-glow);
+  background: transparent;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  cursor: pointer;
+}
+.pkg-btn:visited { color: var(--blue-glow); }
+.pkg-btn:hover { background: rgba(0,212,255,0.1); box-shadow: 0 0 18px rgba(0,212,255,0.25); transform: scale(1.01); }
+.tier-silver .pkg-btn { border-color: rgba(192,192,192,0.4); color: var(--silver); }
+.tier-silver .pkg-btn:visited { color: var(--silver); }
+.tier-silver .pkg-btn:hover { background: rgba(192,192,192,0.08); box-shadow: 0 0 18px rgba(192,192,192,0.15); }
+.tier-gold   .pkg-btn { border-color: rgba(255,215,0,0.4); color: var(--gold); }
+.tier-gold   .pkg-btn:visited { color: var(--gold); }
+.tier-gold   .pkg-btn:hover { background: rgba(255,215,0,0.08); box-shadow: 0 0 18px rgba(255,215,0,0.25); }
+.tier-elite  .pkg-btn { background: var(--blue-glow); color: #060912; border-color: transparent; box-shadow: 0 0 24px rgba(0,212,255,0.35); }
+.tier-elite  .pkg-btn:visited { color: #060912; }
+.tier-elite  .pkg-btn:hover { box-shadow: 0 0 40px rgba(0,212,255,0.6); transform: scale(1.02); }
+
+/* ── SEPARATOR ── */
+.sep-line { height: 1px; background: linear-gradient(90deg, transparent, var(--border), var(--blue-dim), var(--border), transparent); margin-bottom: 50px; }
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  background: rgba(6,9,18,0.9);
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-logo { font-family: 'Orbitron', monospace; font-weight: 900; font-size: 0.95rem; color: var(--blue-glow); text-shadow: 0 0 12px rgba(0,212,255,0.4); }
+.footer-copy { font-size: 0.8rem; color: var(--muted); }
+.footer-nav { display: flex; gap: 28px; }
+.footer-nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+.footer-nav a:visited { color: var(--muted); }
+.footer-nav a:hover { color: var(--blue-glow); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { gap: 16px; }
+  .nav-links a { font-size: 0.75rem; }
+  .shop-hero { padding: 120px 20px 40px; }
+  .shop-section { padding: 30px 20px 60px; }
+  footer { flex-direction: column; text-align: center; }
+  .footer-nav { flex-wrap: wrap; justify-content: center; }
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     NAV
+═══════════════════════════════════════ -->
+<nav>
+  <a href="index.html" class="nav-logo">BLUE<span>LINE</span></a>
+  <ul class="nav-links">
+    <li><a href="rolam.html">Rólunk</a></li>
+    <li><a href="kapcsolat.html">Kapcsolat</a></li>
+    <li><a href="tulajok.html">Tulajdonosok</a></li>
+    <li><a href="csapatunk.html">Admin csapat</a></li>
+    <li><a href="bolt.html" class="active">Bolt</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<div class="shop-hero">
+  <p class="shop-eyebrow">// BlueLine RP Bolt</p>
+  <h1 class="shop-title">Szerezz <span>PP</span> Csomagot</h1>
+  <p class="shop-desc">Válaszd ki a számodra megfelelő csomagot. Minden PP-t a szerveren belül használhatsz.</p>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PACKAGES + ADMIN
+═══════════════════════════════════════ -->
+<section class="shop-section">
+
+  <p class="section-label">// Elérhető csomagok</p>
+  <h2 class="section-heading">Válassz <span>csomagot</span></h2>
+
+  <!-- PACKAGE CARDS (JS renders here) -->
+  <div class="pkg-grid" id="pkgGrid"></div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">BLUELINE RP</div>
+  <span class="footer-copy">© 2026 BlueLine Roleplay — Minden jog fenntartva</span>
+  <nav class="footer-nav">
+    <a href="rolam.html">Rólunk</a>
+    <a href="kapcsolat.html">Kapcsolat</a>
+    <a href="tulajok.html">Tulajdonosok</a>
+    <a href="csapatunk.html">Admin csapat</a>
+    <a href="bolt.html">Bolt</a>
+  </nav>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════ -->
+<script>
+  const packages = [
+    {
+      id: 0,
+      name: 'STARTER',
+      pp: 10000,
+      price: 10000,
+      emoji: '⚡',
+      tier: 'tier-starter',
+      badge: '',
+      features: [
+        '10.000 PP egyenleg',
+        'Azonnali aktiválás',
+        'Alap járművek',
+        'Chat jelvény'
+      ]
+    },
+    {
+      id: 1,
+      name: 'SILVER',
+      pp: 25000,
+      price: 25000,
+      emoji: '🔷',
+      tier: 'tier-silver',
+      badge: 'LEGNÉPSZERŰBB',
+      features: [
+        '25.000 PP egyenleg',
+        '10% bonus PP',
+        'Exkluzív jelvény',
+        'VIP chat rang'
+      ]
+    },
+    {
+      id: 2,
+      name: 'GOLD',
+      pp: 60000,
+      price: 60000,
+      emoji: '👑',
+      tier: 'tier-gold',
+      badge: 'LEGJOBB ÉRTÉK',
+      features: [
+        '60.000 PP egyenleg',
+        '20% bonus PP',
+        'Gold tag az összes csatornán',
+        'Egyedi névszín',
+        'Prioritásos support'
+      ]
+    },
+    {
+      id: 3,
+      name: 'ELITE',
+      pp: 150000,
+      price: 150000,
+      emoji: '💎',
+      tier: 'tier-elite',
+      badge: '',
+      features: [
+        '150.000 PP egyenleg',
+        '35% bonus PP',
+        'Elite rang + egyedi skin',
+        'VIP szoba hozzáférés',
+        'Dedikált admin support',
+        'Havi bonus PP'
+      ]
+    }
+  ];
+
+  function fmtNum(n) {
+    return Number(n).toLocaleString('hu-HU');
+  }
+
+  function renderCards() {
+    const grid = document.getElementById('pkgGrid');
+    grid.innerHTML = '';
+    packages.forEach(function(pkg, i) {
+      const card = document.createElement('div');
+      card.className = 'pkg-card ' + pkg.tier;
+      card.style.animationDelay = (i * 0.07) + 's';
+      const badgeClass = pkg.tier === 'tier-gold' ? 'popular-badge gold' : 'popular-badge';
+      card.innerHTML =
+        (pkg.badge ? '<div class="' + badgeClass + '">' + pkg.badge + '</div>' : '') +
+        '<span class="tier-icon">' + pkg.emoji + '</span>' +
+        '<span class="pkg-pp">' + fmtNum(pkg.pp) + '</span>' +
+        '<span class="pkg-pp-label">PremiumPont</span>' +
+        '<div class="pkg-divider"></div>' +
+        '<span class="pkg-price">' + fmtNum(pkg.price) + ' Ft</span>' +
+        '<span class="pkg-price-label">Egyszeri fizetés</span>' +
+        '<ul class="pkg-features">' +
+          pkg.features.map(function(f) { return '<li>' + f + '</li>'; }).join('') +
+        '</ul>' +
+        '<a href="https://discord.gg/KuCJB6XmTa" target="_blank" class="pkg-btn">' + pkg.name + ' megvásárlása →</a>';
+      grid.appendChild(card);
+    });
+  }
+
+  renderCards();
+</script>
+</body>
+</html>
